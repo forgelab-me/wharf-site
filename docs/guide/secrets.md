@@ -49,8 +49,8 @@ flowchart LR
 
     You -- "encrypt, commit" --> Repo
     Repo -- "git clone at deploy" --> Agent
-    Agent -- ciphertext --> Controller
-    Controller -- plaintext --> Agent
+    Agent -- "ciphertext (mTLS)" --> Controller
+    Controller -- "plaintext (mTLS)" --> Agent
     Agent -- "env vars + secret files" --> Deploy
 
     classDef accent fill:#2dd4bf22,stroke:#2dd4bf,color:#2dd4bf;
