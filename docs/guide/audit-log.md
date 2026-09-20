@@ -14,7 +14,13 @@ A secret, password, or token value never appears here, in any column — only th
 
 ## Filtering
 
-A free-text box filters by whatever's visible in the table — user, action, or target — client-side, no page reload. The page itself shows the 500 most recent entries; nothing older is deleted, just not shown yet.
+A free-text box filters by whatever's visible in the table — user, action, or target — client-side, no page reload. The page itself shows the 500 most recent entries currently in the log.
+
+## Retention
+
+By default nothing is ever deleted. A panel below the log lets you set how many days to keep entries for, per category — containers, stacks, hosts, users, Git connections, registry credentials, SSO, images, volumes, networks, notifications, and backup each have their own independent setting. Leave a category blank or at `0` and it's kept forever; that's the default for every category until you change it. A background check runs once a day and prunes whatever's now older than its category's limit.
+
+There's no single global setting — a homelab that only cares about container restarts for a week but wants every stack-lifecycle event kept indefinitely sets those two differently, rather than picking one number for everything.
 
 ## What isn't logged
 
