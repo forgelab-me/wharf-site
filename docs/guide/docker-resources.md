@@ -4,7 +4,7 @@ Live data pushed by each connected agent over its own persistent tunnel — the 
 
 ## Containers
 
-Every container across every connected host. Filters: by host, free-text search, **Only running**, and **My stacks only** (hide everything Wharf didn't deploy — dev databases, personal tools, whatever else happens to run on the same box). Click any column header to sort; a size-looking value (e.g. `2.39GB`) sorts by actual byte size, not as raw text. **Restart**/**Stop** are right there on each row — no need to open a container just to bounce it.
+Every container across every connected host. Filters: by host, free-text search, **Only running**, and **My stacks only** (hide everything Wharf didn't deploy — dev databases, personal tools, whatever else happens to run on the same box). Click any column header to sort; a size-looking value (e.g. `2.39GB`) sorts by actual byte size, not as raw text. **Restart**/**Stop** are right there on each row — no need to open a container just to bounce it, and a toast confirms it happened without leaving whichever page (list or detail) you clicked from.
 
 ![Containers list with filters](/screenshots/containers.png)
 
@@ -17,9 +17,13 @@ Click a container's name for its detail page:
 - **Container details** — entrypoint, command, restart policy.
 - **Environment variables** — masked by provenance; see [Secrets](/guide/secrets#what-gets-masked-in-the-ui).
 - **Labels, Volumes, Connected networks.**
-- **Logs** — last 200 lines, scrolled to the newest line by default.
+- **Logs** — the last 200 lines inline, scrolled to the newest by default, with a link to the full-page view.
 
 ![Container detail page](/screenshots/container-detail.png)
+
+### Full-page logs
+
+A dedicated `/containers/{id}/logs` page for anything the inline preview is too small for: pick how far back to go (100 lines up to all of them), filter by text without leaving the page, auto-refresh every few seconds (it only jumps to the newest line if you were already at the bottom — reading further up is never interrupted), and a **Download** link for the raw text.
 
 ## Images, volumes, networks
 

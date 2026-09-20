@@ -17,6 +17,7 @@ Wharf exists to close that gap end to end. Every design decision is measured aga
 - **Image auto-update policies** — pin, auto-redeploy, or just flag when a tag's digest moves, checked against any registry that speaks the Docker Registry v2 protocol (Docker Hub, GHCR, GitLab, ACR, self-hosted Harbor/Nexus — discovered dynamically, not hardcoded per vendor).
 - **Private registry credentials** — named, typed entries used both for the digest check and for the actual `docker login` an agent performs before pulling on deploy.
 - **Multi-user with roles** — admin/operator accounts, plus OIDC/SSO for any standard-compliant provider (Authelia, Keycloak, Authentik, ...), with optional AD/LDAP-group-to-role mapping and an optional local-auth lockout for SSO-only shops.
+- **Operational safety net** — an append-only [audit log](/guide/audit-log) of who did what, [encrypted backup/restore](/guide/backup-restore) covering both databases and the controller's own identity, and [webhook notifications](/guide/notifications) for a failed deployment, a disconnected agent, or the fleet falling behind on updates.
 
 ![Dashboard overview](/screenshots/dashboard.png)
 

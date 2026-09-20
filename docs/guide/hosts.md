@@ -20,6 +20,10 @@ Click **Approve** on a pending host. It moves to **Connected hosts**, and only f
 
 Both a host's **Name** and its **Address** (reachable IP or hostname) are editable any time, from the connected-hosts table or from the host's own detail page — a rename never affects deployments or fleet data, since everything actually keys on the host's id, not its display name. Set the address once per host and Wharf can turn a container's published ports into real clickable links on the Containers and stack pages; leave it blank and ports just show as plain text.
 
+## Agent version
+
+Each connected agent reports its own version on every state push, shown as a column on the hosts table and on the host's own page. An **update available** badge appears next to it once a newer `wharf-agent` release exists — checked every few hours against the real GitHub tags, same mechanism as the controller's own version badge in the sidebar. Purely informational: nothing here updates an agent automatically. Pulling a new image and recreating the container is the same manual step either way — see the agent's own `docker run`/`docker compose` command you used to enroll it.
+
 ## Host details
 
 Click a host's name to see its own page: live CPU/memory (aggregated across every container `docker stats` reports for that host — the agent only has `docker.sock`, not the host's own `/proc`, so this is "everything Docker is running there," not the whole machine) plus aggregate network/disk I/O, live while the page is open, no history kept. Below the charts, a **Disk** table — Docker's own footprint on that host: images, containers, volumes, and build cache, each with a count, total size, and how much of it is reclaimable, the same figures `docker system df` would report.

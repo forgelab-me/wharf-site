@@ -59,6 +59,7 @@ The very first check on a new polling stack only records a starting point — it
 ## Working with a stack
 
 - **Name** — editable any time from the stack's own page; nothing else (deployments, image policies, secrets) keys on it, only on the stack's id, so renaming is always safe.
+- **Trigger** — changeable any time after creation too, not just at setup (Git stacks only). Switching to **polling** without an existing schedule starts you at `*/15 * * * *`, immediately editable; switching to **webhook** without an existing secret generates one. Switch away and back and whatever secret/schedule you already had is preserved, not regenerated.
 - **Deploy now** — enqueues a deployment right away regardless of trigger mode.
 - **Undeploy** — stops and removes the stack's containers on its host; the stack's own record (history, keys) stays.
 - **Delete** — permanent, and refused while the stack still looks deployed (undeploy first) or while a deployment is mid-flight.
