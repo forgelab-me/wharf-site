@@ -1,6 +1,6 @@
 # Audit log
 
-Admin-only, under **Settings → Audit log**. An append-only record of who did what: container restart/stop, a stack's whole lifecycle (create/deploy/undeploy/delete/rename/trigger/image policy/secrets), hosts (approve/reject/rename/address), users, Git connections, registry credentials, SSO configuration, and the volume file browser.
+Admin-only, under **Settings → Audit log**. An append-only record of who did what: sign-in/sign-out (local and SSO), container restart/stop, a stack's whole lifecycle (create/deploy/undeploy/delete/rename/trigger/image policy/secrets), hosts (approve/reject/rename/address), users, Git connections, registry credentials, SSO configuration, and the volume file browser.
 
 | Column | What it shows |
 |---|---|
@@ -18,7 +18,7 @@ A free-text box filters by whatever's visible in the table — user, action, or 
 
 ## Retention
 
-By default nothing is ever deleted. A panel below the log lets you set how many days to keep entries for, per category — containers, stacks, hosts, users, Git connections, registry credentials, SSO, images, volumes, networks, notifications, and backup each have their own independent setting. Leave a category blank or at `0` and it's kept forever; that's the default for every category until you change it. A background check runs once a day and prunes whatever's now older than its category's limit.
+By default nothing is ever deleted. A panel below the log lets you set how many days to keep entries for, per category — sign-in/sign-out, containers, stacks, hosts, users, Git connections, registry credentials, SSO, images, volumes, networks, notifications, and backup each have their own independent setting. Leave a category blank or at `0` and it's kept forever; that's the default for every category until you change it. A background check runs once a day and prunes whatever's now older than its category's limit.
 
 There's no single global setting — a homelab that only cares about container restarts for a week but wants every stack-lifecycle event kept indefinitely sets those two differently, rather than picking one number for everything.
 
