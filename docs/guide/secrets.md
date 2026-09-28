@@ -37,6 +37,10 @@ sops -e --age <public key> secrets.yaml > secrets.enc.yaml
 
 :::
 
+No `age`/`sops` installed locally? **Settings → Encrypt secrets** (admin only) does the same thing in the browser — paste or upload the plaintext, pick the stack from a dropdown (or paste a public key directly), choose plain age or SOPS, and copy or download the result. Nothing typed there is ever stored on the controller; it's the exact same one-shot operation as the CLI commands above, just without leaving the browser. SOPS output comes from the real `sops` binary, not a reimplementation, so it's identical to what the CLI would produce. A link right on this panel (**Encrypt it here instead**) jumps there with this stack's public key already filled in.
+
+![Encrypt secrets form, with a SOPS result ready to copy or download](/screenshots/secrets-tool.png)
+
 Wharf detects the format automatically. At deploy time, the agent finds `secrets.enc.yaml` right after cloning but can't read it — only the controller holds the private key. So the ciphertext goes to the controller over the agent's existing connection, and only the resulting plaintext comes back:
 
 ```mermaid
