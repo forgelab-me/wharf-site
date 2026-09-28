@@ -22,7 +22,7 @@ Both a host's **Name** and its **Address** (reachable IP or hostname) are editab
 
 ## Agent version
 
-Each connected agent reports its own version on every state push, shown as a column on the hosts table and on the host's own page. An **update available** badge appears next to it once a newer `wharf-agent` release exists — checked every few hours against the real GitHub tags, same mechanism as the controller's own version badge in the sidebar. Purely informational: nothing here updates an agent automatically. Pulling a new image and recreating the container is the same manual step either way — see the agent's own `docker run`/`docker compose` command you used to enroll it.
+Each connected agent reports its own version on every state push, shown as a column on the hosts table and on the host's own page. An **update available** badge appears next to it once a newer `wharf-agent` release exists — checked every few hours against the real GitHub tags, same mechanism as the controller's own version badge in the sidebar. Purely informational: nothing here updates an agent automatically yet. Until it does, [`scripts/update-agent.sh`](https://github.com/forgelab-me/wharf-agent/blob/main/scripts/update-agent.sh) in the agent repo is a ready-made stand-in — run on the host itself, it pulls the current tag, compares digests, and only removes/recreates the container if there's actually a newer image, cron-friendly with `-y`.
 
 ## Host details
 

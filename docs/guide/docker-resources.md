@@ -13,7 +13,7 @@ The **Stack** column shows the container's compose-project label whenever it has
 Click a container's name for its detail page:
 
 - **Actions** — restart, stop, and, once it's stopped, **Remove** if Wharf didn't deploy it (see below).
-- **Overview** — image (with an up-to-date/update-available badge if it's tracked by an image policy), host, status, ports (clickable if the host has an address set), which stack owns it.
+- **Overview** — image (with an up-to-date/update-available badge if it's tracked by an image policy, and the actual image id this container was created from — a quick way to check it's really running what `/images` shows as current for that host, not something that pull moved on from underneath it), host, status, ports (clickable if the host has an address set), which stack owns it.
 - **Resources** — live CPU/memory chart while the page is open.
 - **Processes** — `docker top` output.
 - **Container details** — entrypoint, command, restart policy.
