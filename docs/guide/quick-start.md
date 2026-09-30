@@ -20,9 +20,12 @@ services:
       WHARF_ADMIN_PASSWORD: ${WHARF_ADMIN_PASSWORD:?WHARF_ADMIN_PASSWORD must be set in .env}
     volumes:
       - wharf-data:/data
+      # optional: only for vulnerability scanning, which keeps gigabytes here
+      - wharf-cache:/cache
 
 volumes:
   wharf-data:
+  wharf-cache:
 EOF
 docker compose up -d
 ```
