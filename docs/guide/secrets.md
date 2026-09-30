@@ -37,7 +37,7 @@ sops -e --age <public key> secrets.yaml > secrets.enc.yaml
 
 :::
 
-No `age`/`sops` installed locally? **Settings → Encrypt secrets** (admin only) does the same thing in the browser — paste or upload the plaintext, pick the stack from a dropdown (or paste a public key directly), choose plain age or SOPS, and copy or download the result. Nothing typed there is ever stored on the controller; it's the exact same one-shot operation as the CLI commands above, just without leaving the browser. SOPS output comes from the real `sops` binary, not a reimplementation, so it's identical to what the CLI would produce. A link right on this panel (**Encrypt it here instead**) jumps there with this stack's public key already filled in.
+No `age`/`sops` installed locally? **Tools → Encrypt secrets** (admin only) does the same thing in the browser — paste or upload the plaintext, pick the stack from a dropdown (or paste a public key directly), choose plain age or SOPS, and copy or download the result. Nothing typed there is ever stored on the controller; it's the exact same one-shot operation as the CLI commands above, just without leaving the browser. SOPS output comes from the real `sops` binary, not a reimplementation, so it's identical to what the CLI would produce. A link right on this panel (**Encrypt it here instead**) jumps there with this stack's public key already filled in.
 
 ![Encrypt secrets form, with a SOPS result ready to copy or download](/screenshots/secrets-tool.png)
 
@@ -94,9 +94,34 @@ secrets.enc.yaml -text
 ```
 :::
 
+## Choosing keys with `secrets.refs.yaml`
+
+Optional, Git stacks only. By default every key of `secrets.enc.yaml` becomes a variable of the stack. Put a `secrets.refs.yaml` next to the compose file instead to list exactly which variables the stack gets, and where each value comes from:
+
+```yaml
+# secrets.refs.yaml — contains no secret, safe to commit
+DB_PASSWORD: ref+sops://secrets.enc.yaml#/DB_PW
+API_KEY:     ref+sops://secrets.enc.yaml#/API_KEY
+```
+
+A reference reads `ref+<scheme>://<path>#/<field>`. The left side is the variable your compose file sees, so a key can be renamed on the way (`DB_PW` above becomes `DB_PASSWORD`). Two schemes exist: `sops` reads the stack's own `secrets.enc.yaml` (either format, and only that file), and `vault` reads from OpenBao or HashiCorp Vault through a connection you set up once, see [Secret providers](/guide/secret-providers). Any other scheme fails the deploy with a clear message.
+
+The rules are strict on purpose:
+
+- **The file is the only source.** With a `secrets.refs.yaml`, keys of `secrets.enc.yaml` that no reference picks up are not deployed; the deployment output names them (never their values) so a forgotten one is easy to spot.
+- **Every value must be a reference.** A literal such as `PASSWORD: hunter2` is refused, and so is a query string (`?address=…`): a reference says what to read, never where to connect.
+- **All or nothing.** If any reference can't be resolved, nothing is deployed and the error lists every failing key.
+- **No file, no change.** A stack without `secrets.refs.yaml` behaves exactly as before.
+
+The agent sends the two files to the controller, which resolves the references and returns only the variables you asked for. The rest of the flow is the one above: `.env` written, `docker compose up`, `.env` deleted.
+
+::: warning Update your agents first
+An agent from before this feature ignores `secrets.refs.yaml` and would start the stack with empty variables. Update the agent on a host (see [Hosts](/guide/hosts)) before adding the file to a stack deployed there. A stack with a [secret provider](/guide/secret-providers) attached is refused on such an agent, instead of deploying with empty variables.
+:::
+
 ## Using a secret in your compose file
 
-Whether a secret came from the form (local stack) or `secrets.enc.yaml` (Git stack), referencing it works the same way. Use `${KEY}` for a plain environment variable, or give the image a file instead, for anything that expects one:
+Whether a secret came from the form (local stack) or `secrets.enc.yaml` / `secrets.refs.yaml` (Git stack), referencing it works the same way. Use `${KEY}` for a plain environment variable, or give the image a file instead, for anything that expects one:
 
 ```yaml
 secrets:
