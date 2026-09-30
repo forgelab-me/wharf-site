@@ -20,3 +20,7 @@ Each credential does double duty:
 ## Editing a registry
 
 **Edit** pre-fills a credential's name/type/username for changing without retyping the password — leave the password field blank to keep the one already stored. The host itself can't be changed in place, since it's the credential's key; remove and re-add to move a credential to a different host. **Remove** asks for confirmation first — the image-update check and every future deploy pull fall back to anonymous/public access the moment it's gone.
+
+## Where else the credentials are used
+
+[Vulnerability scanning](/guide/vulnerability-scanning) reads private images with these credentials too, for the image's host, so a scan of a private image works with no extra setup.

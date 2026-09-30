@@ -10,6 +10,8 @@ The **Stack** column shows the container's compose-project label whenever it has
 
 ![Containers list with filters](/screenshots/containers.png)
 
+With [vulnerability scanning](/guide/vulnerability-scanning) on, each image also carries a badge summarizing the known vulnerabilities in it, as in the screenshot.
+
 Click a container's name for its detail page:
 
 - **Actions** — restart, stop, and, once it's stopped, **Remove** if Wharf didn't deploy it (see below).
@@ -37,7 +39,7 @@ A dedicated `/containers/{id}/logs` page for anything the inline preview is too 
 
 Same host/search filters and sortable columns as Containers, plus an **In use / Unused** filter (a volume/network/image with nothing currently using it is flagged "unused" so you can spot cleanup candidates). Volume sizes load asynchronously, right after the page itself — real, on-demand disk usage per volume, not something guessed or kept running continuously in the background.
 
-Click through to a detail page for the full picture: an image's layers and its Dockerfile-derived `CMD`/`ENTRYPOINT`/`ENV`; a volume's mount options and labels; a network's driver/scope/connected containers.
+With scanning on, a **Vulnerabilities** column shows the same badge for every image in use. Click through to a detail page for the full picture: an image's layers and its Dockerfile-derived `CMD`/`ENTRYPOINT`/`ENV`; a volume's mount options and labels; a network's driver/scope/connected containers.
 
 ### Removing images, volumes, networks — admin only
 
