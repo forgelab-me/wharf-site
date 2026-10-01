@@ -68,7 +68,9 @@ The very first check on a new polling stack only records a starting point — it
 - **Containers** — the stack's own running containers, with status and clickable published ports (once the target host has an [address](/guide/hosts#name-and-address) set), right on the stack page — click a name for that container's full detail page (logs, resources, processes).
 - **Polling stacks** also get a **Check now** button — runs a real check immediately instead of waiting for the schedule, useful right after pushing a change you don't want to wait for.
 
-![Stack detail page with live deployment status](/screenshots/stack-view.png)
+- **Topology** — the stack's sources, containers, volumes and networks drawn as a graph under the containers table; see the [topology graph](/guide/topology).
+
+![Stack detail page with its topology and live deployment status](/screenshots/stack-view.png)
 
 ## Next
 

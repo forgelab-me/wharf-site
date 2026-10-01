@@ -28,4 +28,6 @@ Each connected agent reports its own version on every state push, shown as a col
 
 Click a host's name to see its own page: live CPU/memory (aggregated across every container `docker stats` reports for that host — the agent only has `docker.sock`, not the host's own `/proc`, so this is "everything Docker is running there," not the whole machine) plus aggregate network/disk I/O, live while the page is open, no history kept. Below the charts, a **Disk** table — Docker's own footprint on that host: images, containers, volumes, and build cache, each with a count, total size, and how much of it is reclaimable, the same figures `docker system df` would report.
 
-![Host detail page, live resource charts and disk footprint](/screenshots/host-detail.png)
+Above the charts, a **Topology** panel lists the host's containers by stack, with their image, vulnerabilities, networks and volumes — see the [topology graph](/guide/topology).
+
+![Host detail page, its topology, live resource charts and disk footprint](/screenshots/host-detail.png)

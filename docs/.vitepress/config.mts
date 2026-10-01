@@ -33,6 +33,7 @@ export default defineConfig({
         text: 'Fleet',
         items: [
           { text: 'Hosts', link: '/guide/hosts' },
+          { text: 'Topology graph', link: '/guide/topology' },
         ],
       },
       {
