@@ -56,6 +56,26 @@ The very first check on a new polling stack only records a starting point — it
 
 ![New stack form](/screenshots/stack-form.png)
 
+## The stacks list
+
+The list is an overview of everything you manage, with live figures. Each stack is a row:
+
+- **State**: `running 3/3` when all its containers run, `partial 2/3` when some do not, `stopped 0/3`, `failed · 0/3` when its last deployment failed, `deploying` while one is queued or running. Hover it for the last deployment's status.
+- **Vulnerabilities**: the worst of its images, when [scanning](/guide/vulnerability-scanning) is on.
+- **CPU, memory, network and disk**: the stack's total; for network and disk a rate (kB/s) rather than a total since the containers started.
+
+![The stacks list: one row per stack with live figures, two rows unfolded into container cards](/screenshots/stacks.png)
+
+Click a row, or **Expand all**, to unfold one **card per container**: its image, its vulnerabilities, its published ports and volumes, and four curves of the last five minutes. A stack with no container running keeps its cards, greyed and without curves. Rows are folded by default; what you unfolded is remembered by your browser, not by Wharf.
+
+The figures refresh every 5 seconds, only while the tab is visible, and the controller measures each host once whatever the number of open pages. Good to know:
+
+- **It needs agent 0.7.0** on the host. An older agent shows an "update the agent" note in place of the figures; the rest of the list is unaffected.
+- **Only the stacks Wharf manages** are measured, and only their running containers. Containers Wharf did not deploy are not.
+- **There is no history.** The curves start when you open the page; Wharf keeps nothing between visits.
+- **CPU is Docker's own figure**: a percentage of one core, so it can exceed 100% on a busy multi-threaded container, and a stack's CPU is the sum of its containers'.
+- **The figures are exact** because the agent reads them from the Docker engine's API. If the agent cannot reach the Docker socket (a remote `DOCKER_HOST`), it falls back to `docker stats`, which rounds to three digits: the rates of a container that has moved gigabytes then come out in coarse steps.
+
 ## Working with a stack
 
 - **Name** — editable any time from the stack's own page; nothing else (deployments, image policies, secrets) keys on it, only on the stack's id, so renaming is always safe.
