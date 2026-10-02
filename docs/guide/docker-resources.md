@@ -10,7 +10,9 @@ The **Stack** column shows the container's compose-project label whenever it has
 
 ![Containers list with filters](/screenshots/containers.png)
 
-With [vulnerability scanning](/guide/vulnerability-scanning) on, each image also carries a badge summarizing the known vulnerabilities in it, as in the screenshot.
+An image's freshness is a small dot before its name: **green** when it is up to date, **amber** when an update is available, none when no [image policy](/guide/image-policies) tracks it. A legend under the table says so.
+
+With [vulnerability scanning](/guide/vulnerability-scanning) on, each image can also carry a badge summarizing the known vulnerabilities in it. The page is busy enough without them, so they are behind the **Vulnerabilities** switch in the toolbar: off by default, and your browser remembers your choice. Searching still finds them (type `critical`) while they are hidden.
 
 Click a container's name for its detail page:
 
