@@ -104,7 +104,7 @@ DB_PASSWORD: ref+sops://secrets.enc.yaml#/DB_PW
 API_KEY:     ref+sops://secrets.enc.yaml#/API_KEY
 ```
 
-A reference reads `ref+<scheme>://<path>#/<field>`. The left side is the variable your compose file sees, so a key can be renamed on the way (`DB_PW` above becomes `DB_PASSWORD`). Two schemes exist: `sops` reads the stack's own `secrets.enc.yaml` (either format, and only that file), and `vault` reads from OpenBao or HashiCorp Vault through a connection you set up once, see [Secret providers](/guide/secret-providers). Any other scheme fails the deploy with a clear message.
+A reference reads `ref+<scheme>://<path>#/<field>`. The left side is the variable your compose file sees, so a key can be renamed on the way (`DB_PW` above becomes `DB_PASSWORD`). Three schemes exist: `sops` reads the stack's own `secrets.enc.yaml` (either format, and only that file), `vault` reads from OpenBao or HashiCorp Vault, and `bws` from Bitwarden Secrets Manager, through a connection you set up once, see [Secret providers](/guide/secret-providers). Any other scheme fails the deploy with a clear message.
 
 The rules are strict on purpose:
 

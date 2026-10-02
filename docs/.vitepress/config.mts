@@ -42,6 +42,7 @@ export default defineConfig({
           { text: 'Stacks', link: '/guide/stacks' },
           { text: 'Secrets', link: '/guide/secrets' },
           { text: 'Secret providers', link: '/guide/secret-providers' },
+          { text: 'Path rules', link: '/guide/path-rules' },
           { text: 'Git connections', link: '/guide/git-connections' },
           { text: 'Image update policies', link: '/guide/image-policies' },
         ],
