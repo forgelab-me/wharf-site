@@ -9,6 +9,8 @@ Admin-only, under **Settings → Notifications**. One webhook, fired on the hand
 | An agent falls behind on updates | Checked every few minutes |
 | The controller itself falls behind | Checked every few minutes |
 
+Notifications are sent by the controller, so they cannot tell you that the controller itself is down: for that, watch its [health check](/guide/monitoring) from outside.
+
 The three periodic checks are debounced: each notifies once when the condition starts, and resets once it clears, rather than repeating on every check for as long as it stays true. A routine controller restart — which briefly disconnects every agent while they reconnect — doesn't fire a false "agent disconnected" wave, since the check only runs a few minutes apart, not the instant the tunnel drops.
 
 ## Setting it up

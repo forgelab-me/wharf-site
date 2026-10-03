@@ -71,6 +71,7 @@ export default defineConfig({
           { text: 'Audit log', link: '/guide/audit-log' },
           { text: 'Backup & Restore', link: '/guide/backup-restore' },
           { text: 'Notifications', link: '/guide/notifications' },
+          { text: 'Health checks', link: '/guide/monitoring' },
         ],
       },
     ],
