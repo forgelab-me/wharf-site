@@ -40,11 +40,19 @@ export default defineConfig({
         text: 'GitOps',
         items: [
           { text: 'Stacks', link: '/guide/stacks' },
-          { text: 'Secrets', link: '/guide/secrets' },
-          { text: 'Secret providers', link: '/guide/secret-providers' },
-          { text: 'Path rules', link: '/guide/path-rules' },
           { text: 'Git connections', link: '/guide/git-connections' },
           { text: 'Image update policies', link: '/guide/image-policies' },
+        ],
+      },
+      {
+        text: 'Secrets',
+        items: [
+          { text: 'Secrets', link: '/guide/secrets' },
+          { text: 'Secret references', link: '/guide/secret-references' },
+          { text: 'Secret providers', link: '/guide/secret-providers' },
+          { text: 'OpenBao / Vault', link: '/guide/openbao-vault' },
+          { text: 'Bitwarden', link: '/guide/bitwarden' },
+          { text: 'Path rules', link: '/guide/path-rules' },
         ],
       },
       {

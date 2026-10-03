@@ -1,12 +1,12 @@
 # Path rules
 
-A Git stack's `secrets.refs.yaml` says which secrets it reads, and it lives in Git: whoever can push to that repository chooses the paths. **Path rules** are how you decide, once, on a [secret connection](/guide/secret-providers), what every stack that uses it may read, so that `blog` cannot read the secrets of `shop`, whatever its file says.
+A Git stack's [`secrets.refs.yaml`](/guide/secret-references) says which secrets it reads, and it lives in Git: whoever can push to that repository chooses the paths. **Path rules** are how you decide, once, on a [secret connection](/guide/secret-providers), what every stack that uses it may read, so that `blog` cannot read the secrets of `shop`, whatever its file says.
 
 A rule is checked by the controller on every deploy, before anything is read from the provider. A reference outside the rules fails the deployment without ever reaching OpenBao or Bitwarden.
 
 ## Where to set them
 
-**Settings → Secret providers →** open a connection (or add one) **→ Path rules**. One rule per line. Rules are optional: a connection without any behaves as it always did, with allowed paths typed [stack by stack](/guide/secret-providers#_3-attach-it-to-a-stack).
+**Settings → Secret providers →** open a connection (or add one) **→ Path rules**. One rule per line. Rules are optional: a connection without any behaves as it always did, with allowed paths typed [stack by stack](/guide/secret-providers#which-paths-the-stack-may-read).
 
 Once a connection has rules, attaching a stack needs no path at all. The stack's page shows what the rules give it, for instance `homelab/blog_*`, on the **Secret references** panel.
 
@@ -121,6 +121,10 @@ homelab/shared_*
 ```
 
 Secrets named `shared_smtp`, `shared_registry`… in the same project are readable by every stack, next to each stack's own `blog_…` ones.
+
+### The same repository on several servers
+
+A rule limits what a stack may read. To let one `secrets.refs.yaml` serve a stack per server, write `{stack}` in the references too (`ref+bws://homelab/{stack}_PIHOLE#/value`): with the rule `homelab/{stack}_*`, `dnsweaver-1` reads `homelab/dnsweaver-1_PIHOLE` and `dnsweaver-2` reads `homelab/dnsweaver-2_PIHOLE`. Create one secret per stack in the provider, named after it. See [One file for several stacks](/guide/secret-references#one-file-for-several-stacks).
 
 ### Any provider whose paths start with a container name
 

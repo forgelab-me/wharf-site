@@ -18,7 +18,7 @@ hero:
 
 features:
   - title: Encrypted secrets, server-held keys
-    details: Each stack gets its own age keypair; the private half never leaves the controller. Accepts plain age or real SOPS output — bring the workflow you already use.
+    details: Each stack gets its own age keypair; the private half never leaves the controller. Accepts plain age or real SOPS output, or reads from OpenBao, Vault or Bitwarden by reference.
   - title: A fleet of agents over mTLS
     details: Agents enroll with a self-signed, fingerprint-pinned connection — connect first, approve later. No shared credentials sprayed across hosts.
   - title: Live fleet visibility

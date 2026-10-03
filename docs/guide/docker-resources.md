@@ -21,7 +21,7 @@ Click a container's name for its detail page:
 - **Resources** — live CPU/memory chart while the page is open.
 - **Processes** — `docker top` output.
 - **Container details** — entrypoint, command, restart policy.
-- **Environment variables** — masked by provenance; see [Secrets](/guide/secrets#what-gets-masked-in-the-ui).
+- **Environment variables** — masked by provenance; see [Secrets](/guide/secrets#masking-in-the-ui).
 - **Labels, Volumes, Connected networks.**
 - **Logs** — the last 200 lines inline, scrolled to the newest by default, with a link to the full-page view.
 

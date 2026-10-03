@@ -25,7 +25,7 @@ volumes:
   db-data:
 ```
 
-`${DB_PASSWORD}` here is exactly the kind of value a stack's secrets deliver — see [Secrets](/guide/secrets) for where it actually comes from (a Git stack's `secrets.enc.yaml`, or a local stack's own encrypted block) and why it shows up masked wherever Wharf displays this container's environment later.
+`${DB_PASSWORD}` here is exactly the kind of value a stack's secrets deliver — see [Secrets](/guide/secrets) for where it actually comes from (a local stack's own encrypted block, a Git stack's `secrets.enc.yaml`, or [references](/guide/secret-references) to OpenBao, Vault or Bitwarden) and why it shows up masked wherever Wharf displays this container's environment later.
 
 ## Creating a stack
 
@@ -94,5 +94,6 @@ The figures refresh every 5 seconds, only while the tab is visible, and the cont
 
 ## Next
 
-- [Secrets](/guide/secrets) — encrypting values for a stack, Git or local.
+- [Secrets](/guide/secrets) — encrypting values for a stack, Git or local, and using them in a compose file.
+- [Secret references](/guide/secret-references) and [secret providers](/guide/secret-providers) — keeping them in OpenBao, Vault or Bitwarden instead.
 - [Image update policies](/guide/image-policies) — keeping a stack's images current.
