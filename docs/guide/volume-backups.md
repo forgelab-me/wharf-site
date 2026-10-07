@@ -19,7 +19,7 @@ It needs [agent](/guide/hosts) 0.9.0 or later on the host that owns the volumes.
 
 1. On your file server, [prepare a share](#prepare-the-share) and a user for the backups.
 2. **Settings → Backup destinations → Add a destination**, and **save the repository password** Wharf shows once.
-3. **Backups → New job**: pick the host, the volumes, a schedule and how to treat the containers.
+3. **Backups → New job**: pick the host, tick the stacks or volumes (or give a label), set a schedule and how to treat the containers.
 4. On the job's page, **Initialize the repository** (once per host), then **Back up now**.
 5. Look at the run, and try a **Restore…** into a new volume once, so you know it works before you need it.
 
@@ -112,11 +112,41 @@ On creation Wharf generates the **repository password**, the one that encrypts t
 |---|---|
 | Name | e.g. `nightly-databases` |
 | Destination | One of the above |
-| Volumes | The named volumes of that host to back up |
+| Stacks and volumes | What to back up, as a tree of the host's stacks and their volumes: see [Choosing the volumes](#choosing-the-volumes) |
+| Labels | Optionally, every volume that has one of some labels |
 | Schedule | A 5-field cron expression, in controller time (`0 3 * * *` is every night at 3:00). Empty means manual only |
 | Consistency | **Copy while the containers run**, or **stop the containers that use the volumes, copy, start them again** |
 | Keep | How many snapshots of each volume to keep: the last N, and/or N daily, weekly, monthly. All empty keeps everything |
 | Enabled | The schedule only runs while this is ticked |
+
+### Choosing the volumes
+
+![Choosing the volumes: stacks with their volumes, label rules, and what would be backed up now](/screenshots/backup-volumes.png)
+
+A job backs up the **union** of three things, and the page lists what that makes **right now**, with the reason each volume is in:
+
+- **A stack, ticked as a whole.** Every volume of that stack (more exactly, of that Compose project), *now and later*: a volume added to the stack is in the job at its next run. The stack shows **whole stack, new volumes included**.
+- **Volumes ticked one by one.** A fixed list: a volume added to the stack afterwards is **not** taken. The stack's box is then partly ticked.
+- **Labels.** One rule per line, `wharf.backup` (any value) or `wharf.backup=nightly` (this value). Every volume with a label that matches **any** line is taken, and a new volume that carries it is taken as soon as it exists.
+
+**Unticking a volume under a ticked stack leaves it out of this job.** The stack then reads **whole stack except 1**, and the volume is crossed out. A volume left out is never backed up by this job, **whatever else selects it**: its stack, a label, or a tick. The exclusion belongs to the job, not to the volume: another job can still back it up, and a volume recreated under the same name stays left out here.
+
+The stacks are the Compose projects found in the volumes' `com.docker.compose.project` label, so it works for a stack Wharf deployed (the project is the stack's id) and for any other Compose project on the host, without anything to add to your files. Volumes with no project are under **Without a stack**.
+
+To choose by a label of your own, put it on the volume in the compose file:
+
+```yaml
+volumes:
+  db-data:
+    labels:
+      wharf.backup: "nightly"
+```
+
+::: warning Docker does not change the labels of a volume that already exists
+A label added to a compose file does not reach a volume that was created earlier: Compose warns that the volume does not match the file and leaves it alone. Put the labels on volumes you create, or choose by stack, which needs nothing on the volume.
+:::
+
+The job's volumes are worked out at **every run**, from what the host reports (it changes within seconds of a volume being created or removed, and at the latest every 45 seconds). A run records the volumes it really backed up. A job that selects **nothing** at that moment (a label that is gone, a stack that was removed) is recorded as an error and starts nothing, never as an empty success. Labels need agent 0.9.0, the same one backups need.
 
 ### The repository
 
@@ -226,6 +256,12 @@ Each snapshot is tagged `wharf` and `volume:<name>`, taken with the host name `w
 
 ## Questions
 
+**How do I add a volume to a job?** Tick it in the tree, or give it a label the job selects, or create it in a stack the job takes whole. Nothing else to do: the next run takes it.
+
+**Can the same label serve several jobs?** Yes. A volume left out of one job (unticked there) is still taken by the others.
+
+**Why is a stack's box only partly ticked?** The job takes some of its volumes, by label or by tick, but not the whole stack: a volume added to the stack later is not taken.
+
 **Does it back up my compose files and bind mounts?** No: named volumes only. Keep the compose files in Git, which is what [stacks](/guide/stacks) are for. A bind mount is a folder of the host, and is not in a volume.
 
 **What if the controller is down at 3:00?** The schedule belongs to the controller, so nothing starts and nothing is recorded. The next scheduled time runs normally. A backup that was already running keeps going on the host and reports when the controller is back.
@@ -239,5 +275,7 @@ Each snapshot is tagged `wharf` and `volume:<name>`, taken with the host name `w
 **How do I delete old backups?** Set a retention rule; Wharf thins the snapshots out after each run. To drop one volume's history completely, remove it from the job and delete its snapshots with restic, with the repository password.
 
 **How big is the first backup?** About the size of the volume, a little less if it compresses. After that, only what changed is added: a run page shows **Added** for each volume.
+
+**Can I restore a volume that was removed?** Yes. The restore page also offers the volumes the job has ever backed up, not only the ones that exist now.
 
 **Can I look at a backup without Wharf?** Yes, it is a plain restic repository: see [Without Wharf](#without-wharf).
