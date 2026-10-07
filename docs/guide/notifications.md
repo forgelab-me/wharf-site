@@ -5,6 +5,7 @@ Admin-only, under **Settings → Notifications**. One webhook, fired on the hand
 | Event | When it fires |
 |---|---|
 | Deployment failed | Immediately |
+| A [volume backup](/guide/volume-backups) or restore failed, or could not restart a container it stopped | Immediately |
 | An enrolled agent goes dark | Checked every few minutes |
 | An agent falls behind on updates | Checked every few minutes |
 | The controller itself falls behind | Checked every few minutes |

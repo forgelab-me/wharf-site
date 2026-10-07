@@ -33,6 +33,8 @@ features:
     details: Admin/operator roles, OIDC for any standard-compliant provider, and optional AD/LDAP-group-to-role mapping.
   - title: GitOps or just paste a compose file
     details: Deploy from a Git repository on a schedule or webhook, or author a stack directly in the UI — manual, webhook, and polling triggers all work either way.
+  - title: Volume backups
+    details: Named volumes copied to a SMB share on a schedule, encrypted and deduplicated with restic, with retention and a restore into a new volume.
   - title: An operational safety net
     details: An append-only audit log, encrypted backup and restore of both databases and the controller's identity, and webhook notifications for what goes wrong.
 ---

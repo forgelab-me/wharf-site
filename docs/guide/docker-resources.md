@@ -54,3 +54,7 @@ Each of these three pages has a checkbox per row, a **Delete selected** button, 
 A volume's detail page has a **Browse** button that opens its contents — every action (listing, navigating into a subdirectory, renaming, deleting, uploading, downloading, and editing a small text file) runs inside a throwaway container that mounts just that volume, and only ever operates on a volume Wharf already knows exists on that host. Nothing is cached anywhere else; a directory delete removes everything inside it, with a confirmation before it happens.
 
 ![Browsing a volume's contents](/screenshots/volume-browse.png)
+
+### Back up a volume
+
+A named volume can be copied to a SMB share on a schedule, and restored into a new volume: see [Volume backups](/guide/volume-backups).

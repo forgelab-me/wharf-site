@@ -1,6 +1,6 @@
 # Audit log
 
-Admin-only, under **Settings → Audit log**. An append-only record of who did what, and of what Wharf did on its own: sign-in/sign-out (local and SSO), container restart/stop, a stack's whole lifecycle (create/deploy/undeploy/delete/rename/trigger/image policy/secrets), hosts (approve/reject/rename/address), users, Git connections, registry credentials, SSO configuration, the volume file browser, secret connections and references, vulnerability scanning, and the deployments Wharf starts by itself (a new commit seen by polling, an automatic image update).
+Admin-only, under **Settings → Audit log**. An append-only record of who did what, and of what Wharf did on its own: sign-in/sign-out (local and SSO), container restart/stop, a stack's whole lifecycle (create/deploy/undeploy/delete/rename/trigger/image policy/secrets), hosts (approve/reject/rename/address), users, Git connections, registry credentials, SSO configuration, the volume file browser, volume backups, secret connections and references, vulnerability scanning, and the deployments Wharf starts by itself (a new commit seen by polling, an automatic image update).
 
 | Column | What it shows |
 |---|---|
@@ -18,7 +18,7 @@ A free-text box filters by whatever's visible in the table — user, action, or 
 
 ## Retention
 
-By default nothing is ever deleted. A panel below the log lets you set how many days to keep entries for, per category — sign-in/sign-out, containers, stacks, hosts, users, Git connections, registry credentials, SSO, images, volumes, networks, notifications, backup, secrets, and vulnerability scanning each have their own independent setting. Leave a category blank or at `0` and it's kept forever; that's the default for every category until you change it. A background check runs once a day and prunes whatever's now older than its category's limit.
+By default nothing is ever deleted. A panel below the log lets you set how many days to keep entries for, per category — sign-in/sign-out, containers, stacks, hosts, users, Git connections, registry credentials, SSO, images, volumes, networks, notifications, backup, secrets, vulnerability scanning, and volume backups each have their own independent setting. Leave a category blank or at `0` and it's kept forever; that's the default for every category until you change it. A background check runs once a day and prunes whatever's now older than its category's limit.
 
 There's no single global setting — a homelab that only cares about container restarts for a week but wants every stack-lifecycle event kept indefinitely sets those two differently, rather than picking one number for everything.
 
@@ -31,6 +31,7 @@ A deployment Wharf starts on its own is recorded the same way as one you start, 
 | `stack.deploy_polling` | `polling` | The stack, and the short commit it moved to |
 | `stack.image_update_auto` | `auto-update` | The stack, and the service, image and short digest of the update |
 | `stack.deploy_webhook` | `webhook` | The stack |
+| `volume_backup.run` | `backup-schedule` | The job, and the run it started (a manual run is under the user who clicked) |
 
 Only a deploy that was actually queued is logged. The first check of a new polling stack, which only records a starting point, is not; neither is an automatic update skipped because a deployment of that stack is already waiting. The stack's own page still lists every deployment with its trigger (`polling`, `image-update`, `webhook`, `manual`).
 

@@ -59,6 +59,7 @@ export default defineConfig({
         text: 'Docker resources',
         items: [
           { text: 'Containers, images, volumes, networks', link: '/guide/docker-resources' },
+          { text: 'Volume backups', link: '/guide/volume-backups' },
           { text: 'Vulnerability scanning', link: '/guide/vulnerability-scanning' },
         ],
       },

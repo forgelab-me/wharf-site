@@ -22,6 +22,8 @@ Both a host's **Name** and its **Address** (reachable IP or hostname) are editab
 
 ## Agent version
 
+[Volume backups](/guide/volume-backups) need agent 0.9.0 or later: a host running an older agent is refused with a message that says so.
+
 Each connected agent reports its own version on every state push, shown as a column on the hosts table and on the host's own page. An **update available** badge appears next to it once a newer `wharf-agent` release exists — checked every few hours against the real GitHub tags, same mechanism as the controller's own version badge in the sidebar. Purely informational: nothing here updates an agent automatically yet. (Agents from 0.6.0 also report each image's registry digest and the host's CPU architecture, which [vulnerability scanning](/guide/vulnerability-scanning) needs; an older agent still works, its containers just are not scanned. Agents from 0.7.0 also measure containers for the [stacks list](/guide/stacks#the-stacks-list)'s live figures.) Until it does, [`scripts/update-agent.sh`](https://github.com/forgelab-me/wharf-agent/blob/main/scripts/update-agent.sh) in the agent repo is a ready-made stand-in — run on the host itself, it pulls the current tag, compares digests, and only removes/recreates the container if there's actually a newer image, cron-friendly with `-y`.
 
 ## Host details
