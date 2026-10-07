@@ -11,7 +11,7 @@ Wharf can copy the named Docker volumes of a host to a SMB (CIFS) share on a sch
 | **Consistency** | Copy while the containers run, or stop the containers that use the volumes for the copy |
 | **Restore** | Into a **new** volume, never over the original |
 
-It needs [agent](/guide/hosts) 0.9.0 or later on the host that owns the volumes.
+It needs [agent](/guide/hosts) 0.9.1 or later on the host that owns the volumes.
 
 ![The Backups page: jobs, and the history of their runs](/screenshots/backups.png)
 
@@ -146,7 +146,7 @@ volumes:
 A label added to a compose file does not reach a volume that was created earlier: Compose warns that the volume does not match the file and leaves it alone. Put the labels on volumes you create, or choose by stack, which needs nothing on the volume.
 :::
 
-The job's volumes are worked out at **every run**, from what the host reports (it changes within seconds of a volume being created or removed, and at the latest every 45 seconds). A run records the volumes it really backed up. A job that selects **nothing** at that moment (a label that is gone, a stack that was removed) is recorded as an error and starts nothing, never as an empty success. Labels need agent 0.9.0, the same one backups need.
+The job's volumes are worked out at **every run**, from what the host reports (it changes within seconds of a volume being created or removed, and at the latest every 45 seconds). A run records the volumes it really backed up. A job that selects **nothing** at that moment (a label that is gone, a stack that was removed) is recorded as an error and starts nothing, never as an empty success. Stacks and labels come from the labels the agent reports, which is why backups need agent 0.9.1.
 
 ### The repository
 
@@ -224,7 +224,7 @@ Each snapshot is tagged `wharf` and `volume:<name>`, taken with the host name `w
 
 ## Requirements and limits
 
-- Agent 0.9.0 or later, with access to the Docker socket (the usual install).
+- Agent 0.9.1 or later, with access to the Docker socket (the usual install).
 - The host's kernel needs the `cifs` module (most Linux distributions have it) and the host must reach the file server.
 - The host must be able to pull `restic/restic` from Docker Hub once.
 - **Named volumes only.** Bind mounts, anonymous volumes and the compose files are not backed up.
@@ -243,7 +243,7 @@ Each snapshot is tagged `wharf` and `volume:<name>`, taken with the host name `w
 | `docker could not run the helper: …` (a timeout or no route) | The host cannot reach the file server, or the name does not resolve **on that host** |
 | `pull the restic image: …` | The host cannot pull `restic/restic` from Docker Hub |
 | `the host … is not connected right now` | The agent is offline. A scheduled run is recorded as an error |
-| `volume backups need agent 0.9.0 or later` | Update the agent |
+| `volume backups need agent 0.9.1 or later` | Update the agent |
 | `a backup or restore of the volume … is already running on this host` | Wait for the other run |
 | `this volume does not exist on the host` | The volume was removed or renamed since the job was set up |
 | `some files could not be read; the snapshot is valid but incomplete` | A file was unreadable or vanished while being copied (a warning) |
