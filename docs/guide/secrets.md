@@ -154,6 +154,10 @@ On disk, the two forms differ. `file:` needs its `secrets/<KEY>` file to last as
 Compose reads `${DB_PASSWORD}` from a variable called `DB_PASSWORD`. If no key has that name, Compose does not fail: it prints `The "DB_PASSWORD" variable is not set` in the deployment output and starts the container with an empty value, and the application complains later. With [references](/guide/secret-references#the-name-on-the-left), the name on the left of each line is the one to match.
 :::
 
+::: tip A secret can be several lines
+A value may hold newlines, quotes, `#` or `$` (a credentials file for `smbclient`, a certificate, a password with symbols): it reaches the container exactly as stored, whether it is read as `${KEY}` or as a `secrets:` file. This needs agent 0.9.4 or later; an older agent keeps only the first line of a multi-line value and may stop on a `$`.
+:::
+
 ## Masking in the UI
 
 On a container's detail page, secret-sourced values are masked automatically. For a local stack, any value matching one of the stack's decrypted secrets is masked. For a Git stack (whose secrets the controller never holds centrally), any value the compose file set through `${...}` or `$VAR` substitution is. A literal value such as `TZ: 'America/Toronto'` still shows in plain text.
