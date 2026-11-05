@@ -14,6 +14,27 @@ The generated command mounts `-v /opt/wharf-agent/stacks:/opt/wharf-agent/stacks
 
 Click **Approve** on a pending host. It moves to **Connected hosts**, and only from that point on can a stack be deployed to it. **Reject** removes the enrollment instead — there's nothing to undo, and a rejected agent can simply retry later and show up again as a fresh pending entry.
 
+Until it is approved, a host can do nothing on the agent channel: the controller answers 403 to its commands, secret requests, reports and tunnel, whatever the interface shows.
+
+A pending agent nobody approves is removed after 24 hours, and at most 50 can wait at once (a further one is refused with a 429, retry later). Both limits are environment variables of the controller: `WHARF_PENDING_TTL` (e.g. `12h`, `0` to keep them forever) and `WHARF_MAX_PENDING` (`0` for no limit). An agent that is still running when its entry disappears simply enrolls again and shows up as a new pending entry.
+
+## Enrollment token
+
+To enroll an agent without the manual approval, click **Generate an enrollment token** under *Add an agent*. The `docker run` command then includes `--enrollment-token=…`. The token:
+
+- works **once** and expires after **one hour**;
+- is shown **only once** — the controller keeps just a hash, so reload the page and it is gone (generate another);
+- approves the agent that uses it on first contact, in place of the click on **Approve** — so the usual comparison of the agent's fingerprint is skipped for that agent. The token travels over the pinned TLS connection, but it stays readable in `docker inspect` until it is used or expires;
+- is ignored by an agent the controller already knows, and refused (401) once used or expired.
+
+Set `WHARF_REQUIRE_ENROLLMENT_TOKEN=true` on the controller to refuse every new agent that doesn't present a valid token — the manual approval flow is then closed. Agents already enrolled are not affected. Needs agent 0.10.0 or later to send the token.
+
+## Certificate rotation
+
+An agent's identity is a self-signed certificate pinned by the controller. From agent 0.10.0 the agent replaces it by itself once it is older than 90 days (`--rotate-after`, `0` to disable), with no re-approval and no action on your side. It generates the new key on the host, announces only the public certificate, and the controller accepts both until the new one is first used, then forgets the old one. A crash at any point is recovered at the next start. Rotation needs controller 0.21.0 or later; against an older one it is refused and retried every 10 minutes, with no effect on the agent.
+
+To revoke a host you suspect is compromised, remove it (or reject it while pending): its certificate stops being accepted at once.
+
 ![Connected hosts table](/screenshots/hosts.png)
 
 ## Name and address
