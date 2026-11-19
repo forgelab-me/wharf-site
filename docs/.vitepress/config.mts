@@ -52,6 +52,7 @@ export default defineConfig({
           { text: 'Secret providers', link: '/guide/secret-providers' },
           { text: 'OpenBao / Vault', link: '/guide/openbao-vault' },
           { text: 'Bitwarden', link: '/guide/bitwarden' },
+          { text: 'Infisical', link: '/guide/infisical' },
           { text: 'Path rules', link: '/guide/path-rules' },
         ],
       },

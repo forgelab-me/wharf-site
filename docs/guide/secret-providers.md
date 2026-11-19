@@ -1,11 +1,12 @@
 # Secret providers
 
-A secret provider is a place your secrets live outside Git and outside Wharf: [OpenBao or HashiCorp Vault](/guide/openbao-vault), or [Bitwarden Secrets Manager](/guide/bitwarden). A Git stack's [`secrets.refs.yaml`](/guide/secret-references) points at them, and the controller reads the values at deploy time with credentials it keeps itself.
+A secret provider is a place your secrets live outside Git and outside Wharf: [OpenBao or HashiCorp Vault](/guide/openbao-vault), [Bitwarden Secrets Manager](/guide/bitwarden), or [Infisical](/guide/infisical). A Git stack's [`secrets.refs.yaml`](/guide/secret-references) points at them, and the controller reads the values at deploy time with credentials it keeps itself.
 
 | Scheme | Reads from | Needs a connection |
 |---|---|---|
 | `ref+vault://` | [OpenBao or HashiCorp Vault](/guide/openbao-vault), KV v1 or v2, token or AppRole login | yes |
 | `ref+bws://` | [Bitwarden Secrets Manager](/guide/bitwarden), with a machine account | yes, and a tool to download |
+| `ref+infisical://` | [Infisical](/guide/infisical), cloud or self-hosted, access token or Universal Auth login | yes |
 | `ref+sops://` | The stack's own `secrets.enc.yaml` | no |
 
 Setting one up takes three steps, the same for every provider: add a **connection** (once), attach it to the **stacks** that may use it, and write **references**.
@@ -33,7 +34,7 @@ flowchart LR
 The list shows each connection's address, its path rules, whether default credentials are set, and which stacks use it.
 
 - **Credentials are write-only.** They are never shown again once saved. Editing a connection: leave the credential fields empty to keep what is stored; typing any of them replaces the whole set; **Remove the default credentials** clears them.
-- **Test** checks the connection with the default credentials and tells you whether it worked: a login for OpenBao and Vault, the list of projects for Bitwarden. It does not read a secret and does not check path rules. It appears once a connection has default credentials.
+- **Test** checks the connection with the default credentials and tells you whether it worked: a login for OpenBao and Vault, the list of projects for Bitwarden, the identity's own details for Infisical. It does not read a secret and does not check path rules. It appears once a connection has default credentials.
 - **Default credentials are optional.** Leave them empty if every stack brings its own.
 - **Changing the address** of a connection changes it for every stack that inherits it, and their credentials are then sent to the new address. The connection's page warns you.
 - **Deleting** a connection a stack still uses is refused; the message lists the stacks.
